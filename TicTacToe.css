@@ -1,0 +1,149 @@
+:root{ 
+                /* eintrag für root pseudoklasse variablen hier definiert werden überall im css bogen verwendet werden können 2 variablen erstelln kreis farbe kreuz farbe*/
+    --kreis--farbe: red;
+    --kreuz--farbe: blue; 
+
+}
+
+
+body{
+    min-height: 100vh; /* saagen das body element immer mindestens genau so hoch sein soll wie anzeigebereich des browser leider body von browser bekommt margin margin ist in 100vh nicht enthalten p element bekommt margin */
+    margin: 0;
+    display: flex; /* 	12. Flexbox layout für den inhalt des boy elements aktivieren flexbox layout  da gibt’s kein margin collapsing nicht 13. Aktivieren mit eigenschaft display zuweisen des wertes flex; dadurch body in flexbox behälter verwandelt margin collapsing dealtiviertn */
+    flex-direction: column; /* 	14. Flex direction um richtung der hauptachse zu ändern wert column damit elemente von oben utereinander angehängt werden*/
+    justify-content: center;  /* für inhalt mitte */
+    align-items: center; 
+    gap: clamp(1rem, 10vh, 4rem); 
+}
+
+.WerDrannIst,
+.overlay-text{
+    font-size: clamp(2rem, 10vh, 4rem) ; /* größe der schrift regeln */
+    font-weight: 900; /* strichstärke der schrift 900 sehr fett */
+    text-align: center; /* text zentrieren immer */ /*overlay text wird größer mittig fettgedruckt etc*/
+    
+
+}
+
+.TicTacToeSpielfeld{ /* für die Spielfläche vormatierung */
+
+    width: 1000px;
+    aspect-ratio: 1 / 1; /* seitenverhätnis browser berechnet größe element automatisch breite höhe gleich deswegen 1/1   spielfeld bleibt quadratisch*/
+    max-width: 20% ; /* maximale breite niemals breiter als 90% gesamtbreite anzeigebereich */
+    max-height: 50vh;
+    display: grid; /* buttons werden untereinander in einer spalte angezeigt */
+    grid-template-columns: 1fr 1fr 1fr; /* 3 gleich große spalten erzeugen  wie groß die spalten sein sollen */
+    
+    
+    
+}
+
+.TicTacToeFeld {
+    background-color: transparent;
+    border: 0.2rem solid black; /* rahmen felder stärke art und farbe solid durchgezogene linie schwarz farbe UM INHALT DER FELDER ZENTRIERT DARZUSTELLEN*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%; /* damit spielsteine nicht an rahmen der felder stoßen lasst abstand definiern zwischen ihalt element und dem rahmen auf allen steiten platz 5% */
+    aspect-ratio: 1/1; /* damit feld quadratisch ist das kreis also spielstein auch rund ist da 100 höhe größer ist als 100 breite aktuell vor aaspect ratio dadurch feld quadritsch also gleich groß kreis ist rund weil volle vrteite und höhre kreisrund*/
+}
+
+
+.TicTacToeFeld:nth-child(-n+3){ /* für die ersten 3 felder/spalten */
+    border-top: none;
+}
+
+.TicTacToeFeld:nth-child(3n+3){   /* 3n bedeutet dreier schritte 3,6,9 -- jedes 3.Feld ausgewählt werden soll und die +3 bedeutet das nicht beim ersten sondern beim 3. feld begonnen werden soll*/
+    border-right: none;
+}
+
+.TicTacToeFeld:nth-child(n + 7){   /* n beginnt bei 0  was so viel bedeutet wähle jedes element beginne aber beim 7. 0+7, 1+7, 2+7  */
+    border-bottom: none;
+}
+.TicTacToeFeld:nth-child(3n + 1){   /* 3n dreier schritte 1,4,7-- +1 um beim ersten feld zu beginnen   */
+    border-left: none; /* rahmen links außen entfernen */
+}
+.TicTacToeFeld::before,
+.TicTacToeFeld::after{
+    content:"" ; /*inhalt pseudoeleement festlegen  um es anzeigen zzu können da wir als form erstellen werden reidht  "" */
+    box-sizing: border-box; /* rahmen manipulieren */
+}
+.TicTacToeFeld.Kreis::before,
+.WerDrannIst.Kreis ~ .TicTacToeSpielfeld .TicTacToeFeld:not([disabled]):hover::before{/* damit das kreissymbol pseudomäsig erscheintum zusagen dass der kreisspieler an der reihe ist    /* elemente feld klasse die kreis klasse angehören before pseudoeleement aiuswähjlem*/
+    border: 1rem solid var(--kreis--farbe) ; /*rahmen pseudoelement festlegen */
+    border-radius: 50%; /*erlaubt ecken abzurunden*/
+    width: 100%; /*damit sich spielsteine über gesamtes feld sich erstrecken */
+    height: 100%;
+}
+.TicTacToeFeld.Kreuz::before, /* da wir 2 streifen braucvhen 2 untersvchiedlichen elemente deswegen before und agter pseudoelement der feldklasse mit der kreuz klasse auswählenm müssen*/
+.TicTacToeFeld.Kreuz::after{
+    background-color: var(--kreuz--farbe); /* farbe für kreuze weil content wert leer ist inhalt pseudoelelemnt 0 mal0 groß*/
+    width: 1rem; /*größe striche ändern erzeugen 1rem damit größe mit kreis einheitlich ist  */
+    height: 100%; /*damit sich strich über die gesamte fläche der felder erstrecken*/
+}
+.TicTacToeFeld.Kreuz::before{ /* weil unterschiedliche zuweisung 2 neue einträge für before und after pseudoelement der delder mit kreuz klasse*/
+    transform:translateX(50%) rotate(45deg) ; /* transform zuweiszng mit der koordinaten element ändern als wert transalateX funtkion diese lässt eleement horizontal verschieben werte aber anders links streifen rechts andere links  weil before vor after aus natur kommt before pseudoelement fpr linkes element muss um hälftte der breiteb nach rechrts verschoben werden 50% da % sich auf breite des eleemnts selbnst beziehen positvie werte verschiebzng nach rechts*/
+
+
+}
+
+.TicTacToeFeld.Kreuz::after{
+    transform: translateX(-50%) rotate(-45deg);/* after pseudoelement repräsentiert den rechten streifen um ihn  um hälfte seiner breite nach links zu verschiehben -50% DAMIT LIEGEN STREIFEN ÜBEREINANDER IN DER MITTE DES FELDES--- um daraus ein kreuz wird müssen wir die streifen in entgegengesetze richtungen drehen ROTATE um streifen zu drehen positive werte drehung im uhrzeigesinn*/
+}
+
+.WerDrannIst.Kreis, /*elemente der werdrannist klasse die außerdem der kreis klasse angehören  Farbe für die Schrift wer drann ist festlegen------------SPIELANZEIGE WER DRANN IST EINFÄRBEN*/ 
+.overlay-text.Kreis{  /* overlaytext elemetn mit kreis klasse auswählen selbe bei kreuz klasse*/
+    color: var(--kreis--farbe); /*farbe des overlay textes bei sieg kreis */
+
+}
+.WerDrannIst.Kreuz,
+.overlay-text.Kreuz{ /* damit beim sieg des jeweiligen spielers im overlay dessen farbe angezeigt wird also die overlay text farbe*/
+    color: var(--kreuz--farbe);
+
+}
+/*anklickbarkeit signalisieren am ende des videos wenn der gegner drann ist das die felder nicht anklickbar aussehen wenn ich drann bin schon*/
+.WerDrannIst.Kreis ~ .TicTacToeSpielfeld .TicTacToeFeld:not([disabled]){ /* felder auswählen die noch nicht deaktiviert sind not pseudoklasse verwenden attribut disabled wird geprüft bookleasche attribtut sagt ob deaktiviert ist oder nicht --- alle felder an denen kein disabeld attribut hängt alsao alle felder die nicht deaktiviert sind*/
+    cursor: pointer; /* cursor der klickbarkeit signalisiert */ /* wer drann ist element asuwählen wenn gleichzeitig der kreis also ich drann bin*/
+}
+
+.WerDrannIst.Kreis ~ .TicTacToeSpielfeld .TicTacToeFeld:not([disabled]):hover::before { /* um vorschau kreis transparenter zu machen opacity deckkraft eleemnt festlegen */
+    opacity: 0.3;
+
+
+}
+.overlay{
+
+    background-color: rgba(0,0,0,0.99);
+    position: fixed; /* fixe position mit inset größe ändern wert 0 gesamte flache*/
+    inset: 0;
+    color: white;
+    display: flex; /* um elemente text in die mitte des overlays  zu bekommen overlay flexboy behälter erstellen*/
+    flex-direction: column; /* elemente verlaufen von oben nach unten hauptachse ändern*/
+    justify-content: center; /* elemente in die mitte bekommen */
+    align-items: center;
+    gap: clamp(1rem, 2vh, 4rem); /* abstand der elemente regelen */
+    opacity: 0; /*deckkraft element overlay zu verstecken 0*/
+    pointer-events: none; /* berhindern das das overlay angeklickt werden kann mausklicks gehen durchs overlay hindurch*/
+}
+
+.overlay-button{
+    font-size: 2rem; /* schriftgröße button ändern doppelte größe vom standard */
+    font-weight: 600; /* schrift kräftiger machen */
+    background-color: white;
+    border: none; /*keine rahmen button */
+    padding: 0.5em 1em ;
+    border-radius: 2rem/50%; /*abrunden button*/
+    cursor: pointer; /*mauszeiger ändert sich signalisieren  anklicken  ändern */
+    
+}
+
+.overlay-button:hover{  /*2 eintrag für ele,ente der overlay button klasse wählen sie diesmal mit der hover pseudoklasse nur aus wen mit der maus drüüber gefahren wird*/
+    background-color:rgb(211,211,211) ;
+
+}
+.overlay.sichtbar{
+    opacity: 1; /*damit  overlay wieder sichtbar wird*/
+    pointer-events: all; /* damit inhsalte  overlay wieder ziel eines klicks werden kann/*
+    /*--um overlay sichtbar zu machen wenn man gewinnt   neuen eintrag für elemente der overlay klasse die auch der sichtbar klasse angehören */
+    transition: opacity 2s; /* damit overlay langsam eingeblendet werden kann*/
+}
